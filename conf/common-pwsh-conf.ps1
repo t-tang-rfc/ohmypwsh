@@ -25,5 +25,6 @@
 Remove-Module PSReadline
 
 # Set environment variables
+Set-Item -Path "env:GPG_TTY" -Value "$(tty)" # @note, use `Get-Command -Name tty` to check whether the command is available
 
 # /// PSReadline configuration
