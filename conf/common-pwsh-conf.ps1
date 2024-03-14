@@ -22,12 +22,24 @@
 # /// Environment setup
 # ////////////////////////////////////////////////////////////
 
-# // Unload PSReadline (@note, ince PSReadline is automatically loaded, we unload it first to do some configuration)
+# Unload PSReadline (@note, ince PSReadline is automatically loaded, we unload it first to do some configuration)
 Remove-Module -Name PSReadline
 
-# // Set environment variables
-# configure GPG_TTY such that gpg-agent can find the tty for passphrase input
-Set-Item -Path "env:GPG_TTY" -Value "$(tty)" # @note, use `Get-Command -Name tty` to check whether the command is available
+# Set environment variables
+
+Set-Item -Path "env:GPG_TTY" -Value "$(tty)" # configure GPG_TTY such that gpg-agent can find the tty for passphrase input. @note, use `Get-Command -Name tty` to check whether the command is available
+
+# Set global variables
+
+Set-Variable -Name "Global:PD_ERROR_STAT" -Value $true
+
+Set-Variable -Name "Global:PD_PROMPT_PATH" -Value "N/A" # @todo
+
+Set-Variable -Name "Global:PD_PROMPT_MACHINE" -Value ([Environment]::MachineName)
+
+Set-Variable -Name "Global:PD_PROMPT_USER" -Value ([Environment]::UserName)
+
+# Set-Item -Path "variable:$Global:PD_ERROR_STAT" -Value $true
 
 # /// Alias configuration
 
@@ -53,18 +65,16 @@ Function prompt {
 	$line_0 = @(
 		'|-',
 		'[',
-		'env:',
-		$Global:custom_conda_prompt,
+		$Global:custom_conda_prompt, # @todo
 		']',
 		'[',
 		(
-			$Global:custom_usr_id +
-			'@' + $Global:custom_machine_id + ':' + 
-			$Global:custom_path_prompt
+			$Global:PD_PROMPT_USER +
+			'@' + $Global:PD_PROMPT_MACHINE + ':' + 
+			$(pwd) # @todo
 		),
 		']',
 		'[',
-		'git:',
 		$Global:custom_git_info.git_prompt,
 		']'
 	) -join ''
