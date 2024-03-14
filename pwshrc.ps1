@@ -10,6 +10,9 @@
 	@details:
 	This script will load external modules.
 
+	@author:
+	- Tianhan Tang (tianhantang.pd@gmail.com)
+
 	@date:
 	- created on 2021-06-08
 	- updated on 2024-03-13
