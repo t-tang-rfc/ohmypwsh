@@ -13,11 +13,10 @@
 
 	@date:
 	- created on 2021-08-05
-	- updated on 2024-03-14
+	- updated on 2024-03-20
 
 	@todo:
-	- [x] Move setting of GPG_TTY to platform-specific configuration
-	- [ ] Rearrange prompt function
+	- [x] Rearrange prompt function
 #>
 
 # /// Locale settings
@@ -57,16 +56,16 @@ Function prompt {
 		']',
 		'[',
 		($stat ? 'o' : 'x'),
-		']'
+		']',
+		'[',
+		$Global:custom_git_prompt,
+		']'		
 	) -join ''
 	# Line 3 (empty)
 	$line_3 = ''
 	# Line 0 ([env][name@machine:path][git])
 	$line_0 = @(
 		'|-',
-		'[',
-		$Global:custom_conda_prompt, # @todo
-		']',
 		'[',
 		(
 			$Global:PD_PROMPT_USER +
@@ -75,7 +74,7 @@ Function prompt {
 		),
 		']',
 		'[',
-		$Global:custom_git_info.git_prompt,
+		$Global:custom_env_prompt, # @todo
 		']'
 	) -join ''
 	# Line 1 (command)
