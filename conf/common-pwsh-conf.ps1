@@ -41,8 +41,6 @@ Set-Variable -Name "Global:PD_PROMPT_USER" -Value ([Environment]::UserName)
 
 # Set-Item -Path "variable:$Global:PD_ERROR_STAT" -Value $true
 
-# /// Alias configuration
-
 # /// Prompt configuration
 # ////////////////////////////////////////////////////////////
 
@@ -111,3 +109,9 @@ Set-PSReadLineOption @PSReadLineOptions
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+# /// Alias configuration
+# ////////////////////////////////////////////////////////////
+
+# Remove all aliases
+Remove-Item -Path "alias:*" -Force
