@@ -17,6 +17,7 @@
 
 	@todo:
 	- [x] Rearrange prompt function
+	- [ ] Limit prompt length
 #>
 
 # /// Locale settings
@@ -106,3 +107,7 @@ $PSReadLineOptions = @{
 	HistorySearchCursorMovesToEnd = $true
 }
 Set-PSReadLineOption @PSReadLineOptions
+# Set PSReadline key handlers
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
