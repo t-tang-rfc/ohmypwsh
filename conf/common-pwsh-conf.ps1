@@ -102,7 +102,10 @@ Import-Module -Name PSReadline
 $PSReadLineOptions = @{
 	EditMode = "Emacs";
 	HistoryNoDuplicates = $true;
-	HistorySearchCursorMovesToEnd = $true
+	HistorySearchCursorMovesToEnd = $true;
+	Colors = @{
+		Command = "`e[32m" # @todo: check if one can directly specify the color
+	}
 }
 Set-PSReadLineOption @PSReadLineOptions
 # Set PSReadline key handlers
@@ -114,4 +117,4 @@ Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 # ////////////////////////////////////////////////////////////
 
 # Remove all aliases
-Remove-Item -Path "alias:*" -Force
+# Remove-Item -Path "alias:*" -Force
