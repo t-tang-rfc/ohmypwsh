@@ -42,6 +42,8 @@ Set-Variable -Name "Global:PD_PROMPT_USER" -Value ([Environment]::UserName) -Vis
 Set-Variable `
 	-Name "Global:PD_COLOR_PALLETE" `
 	-Value @{
+		'Licorice'   = '#000000';
+		'Lead'       = '#212121';
 		'Banana'     = '#FFFC79';
 		'Salmon'     = '#FF7E79';
 		'Spindrift'  = '#73FCD6';
@@ -92,29 +94,29 @@ Function Get-Theme {
 	return @{
 		'light' = @{
 			Command                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Strawberry']))m";
-			Comment                  = $PSStyle.Foreground.FromRGB(0x006400);
-			ContinuationPrompt       = $PSStyle.Foreground.FromRGB(0x0000FF);
-			Default                  = $PSStyle.Foreground.FromRGB(0x0000FF);
-			Emphasis                 = $PSStyle.Foreground.FromRGB(0x287BF0);
-			Error                    = $PSStyle.Foreground.FromRGB(0xE50000);
-			InlinePrediction         = $PSStyle.Foreground.FromRGB(0x93A1A1);
-			Keyword                  = $PSStyle.Foreground.FromRGB(0x00008b);
-			ListPrediction           = $PSStyle.Foreground.FromRGB(0x06DE00);
-			Member                   = $PSStyle.Foreground.FromRGB(0x000000);
-			Number                   = $PSStyle.Foreground.FromRGB(0x800080);
-			Operator                 = $PSStyle.Foreground.FromRGB(0x757575);
-			Parameter                = $PSStyle.Foreground.FromRGB(0x000080);
-			String                   = $PSStyle.Foreground.FromRGB(0x8b0000);
-			Type                     = $PSStyle.Foreground.FromRGB(0x008080);
-			Variable                 = $PSStyle.Foreground.FromRGB(0xff4500);
-			ListPredictionSelected   = $PSStyle.Background.FromRGB(0x93A1A1);
-			Selection                = $PSStyle.Background.FromRGB(0x00BFFF)
+			Comment                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			ContinuationPrompt       = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Default                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m"; # DefaultTokenColor
+			Emphasis                 = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Error                    = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			InlinePrediction         = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Keyword                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			ListPrediction           = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Member                   = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Number                   = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Operator                 = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Parameter                = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			String                   = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Type                     = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Variable                 = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			ListPredictionSelected   = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
+			Selection                = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
 		};
 		'dark' = @{
 			Command                  = $PSStyle.Foreground.FromRGB(0x0000FF);
 			Comment                  = $PSStyle.Foreground.FromRGB(0x006400);
 			ContinuationPrompt       = $PSStyle.Foreground.FromRGB(0x0000FF);
-			Default                  = $PSStyle.Foreground.FromRGB(0x0000FF);
+			Default                  = $PSStyle.Foreground.FromRGB(0x0000FF); # DefaultTokenColor
 			Emphasis                 = $PSStyle.Foreground.FromRGB(0x287BF0);
 			Error                    = $PSStyle.Foreground.FromRGB(0xE50000);
 			InlinePrediction         = $PSStyle.Foreground.FromRGB(0x93A1A1);
