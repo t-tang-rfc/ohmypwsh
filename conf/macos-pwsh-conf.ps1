@@ -10,7 +10,7 @@
 
 	@date:
 	- created on 2021-08-09
-	- updated on 2024-03-20
+	- updated on 2024-11-18
 #>
 
 # /// Environment setup
@@ -127,4 +127,28 @@ Function Remove-WKSP {
 			}
 		}
 	}
+}
+
+# @brief: Switch the light/dark theme for the prompt
+# @details:
+# There are two major parts for the thme
+# 1. The PSReadLine coloring
+# 2. The custom prompt coloring
+# @param[in]: $Theme - the theme name
+# @param[out]: None
+# @note: This utility function is not a real function in the functional programming sense, since it has side effects.
+function Switch-Theme {
+    param (
+        [Parameter(Mandatory)]
+        [ValidateSet("Dark", "Light")]
+        [string]$Theme
+    )
+    if ($Theme -eq "Dark") {
+        # Set-PSReadLineOption -Colors @{ Command = "DarkYellow"; Prompt = "Gray" }
+        # $Global:TerminalTheme = "Dark"
+    } elseif ($Theme -eq "Light") {
+        # Set-PSReadLineOption -Colors @{ Command = "Blue"; Prompt = "Black" }
+        # $Global:TerminalTheme = "Light"
+    }
+    Write-Host "Switched to $Theme theme."
 }

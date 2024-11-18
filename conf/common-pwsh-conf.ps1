@@ -13,7 +13,7 @@
 
 	@date:
 	- created on 2021-08-05
-	- updated on 2024-09-29
+	- updated on 2024-11-17
 
 	@todo:
 	- [x] Rearrange prompt function
@@ -142,7 +142,7 @@ Function Get-Theme {
 # //////////////////////////////////////////////////////////////
 
 # Prompt function
-Function prompt {
+function prompt {
 	$stat = $Global:custom_error_status -and $? # @todo
 	# Line 2 (time and status)
 	$line_2 = @(

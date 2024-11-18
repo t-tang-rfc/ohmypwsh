@@ -1,0 +1,29 @@
+@file: 07-Panda/M1/ohmypwsh/tickets.txt
+
+=== Ticket 1
+
+@brief:
+Create a oh-my-zsh inspired PowerShell custom prompt.
+
+@status: INPROGRESS
+
+@date:
+- initiated on 2024-11-16
+- updated on 2024-11-19
+
+--- Ticket 1-1
+
+@brief:
+Add proper color scheme for the 3 major fields of terminal prompt---user name, machine name, and path.
+
+@status: INPROGRESS
+
+@date:
+- initiated on 2024-11-16
+- updated on 2024-11-19
+
+@details:
+Need to use a hashtable to hold each prompt color component in a separate field.
+In the past, I have spent quite a lot of time on an utility `SwitchTheme` that switches not only the terminmal prompt, but also macOS system wide dark/light theme, with automatical trigger by sunrise/sunset.
+This time, I plan to create a PowerShell function `Switch-Theme ['dark' | 'light']`.
+Given those experience tweaking w/ system-wide theme altogether, I decide this function should go into the platform-dependent utility category, and I first implement it in `macos-pwsh-conf.ps1`.
