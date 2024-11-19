@@ -13,7 +13,7 @@
 
 	@date:
 	- created on 2021-08-05
-	- updated on 2024-11-17
+	- updated on 2024-11-20
 
 	@todo:
 	- [x] Rearrange prompt function
@@ -39,8 +39,21 @@ Set-Variable -Name "Global:PD_PROMPT_MACHINE" -Value ([Environment]::MachineName
 
 Set-Variable -Name "Global:PD_PROMPT_USER" -Value ([Environment]::UserName) -Visibility Private
 
-Set-Variable `
-	-Name "Global:PD_COLOR_PALLETE" `
+New-Variable `
+	-Name "PD_PROMPT_COLOR" `
+	-Value @{
+		'BG_USER'   = '255;255;255';		
+		'FG_USER'   = '0;0;0';
+		'BG_MACHINE' = '255;255;255';		
+		'FG_MACHINE' = '0;0;0';
+		'BG_PATH'   = '255;255;255';		
+		'FG_PATH'   = '0;0;0';
+	} `
+	-Scope Global `
+	-Visibility Private
+
+New-Variable `
+	-Name "PD_COLOR_PALLETE" `
 	-Value @{
 		'Licorice'   = '#000000';
 		'Lead'       = '#212121';
@@ -54,14 +67,16 @@ Set-Variable `
 		'Silver'     = '#D6D6D6';
 		'Strawberry' = '#FF2F92';
 	} `
-	-Visibility Private
+	-Scope Global `
+	-Visibility Public `
+	-Option ReadOnly
 
 # Set-Item -Path "variable:$Global:PD_ERROR_STAT" -Value $true
 
 # /////////////////// Utility functions ////////////////////////
 
 # Function to convert #RRGGBB to ANSI escape sequence
-Function Convert-HexColorToANSI {
+function Convert-HexColorToANSI {
 	[OutputType([String])]
 	param (
 		[Parameter(Mandatory = $True, Position = 0)][string]$hex_color # The color in #RRGGBB format
@@ -164,7 +179,7 @@ function prompt {
 		'|-',
 		'[',
 		(
-			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Ocean']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + $Global:PD_PROMPT_USER) +
+			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_USER']);38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + $Global:PD_PROMPT_USER) +
 			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + '@') +
 			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m" + $Global:PD_PROMPT_MACHINE) +
 			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + ':') +

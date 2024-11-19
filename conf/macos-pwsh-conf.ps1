@@ -146,6 +146,15 @@ function Switch-Theme {
     if ($Theme -eq "Dark") {
         # Set-PSReadLineOption -Colors @{ Command = "DarkYellow"; Prompt = "Gray" }
         # $Global:TerminalTheme = "Dark"
+		$Global:PD_PROMPT_COLOR = @{
+			'BG_USER'   = Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Ocean'];			
+			'FG_USER'   = '0;0;0';
+			'BG_MACHINE' = '255;255;255';		
+			'FG_MACHINE' = '0;0;0';
+			'BG_PATH'   = '255;255;255';		
+			'FG_PATH'   = '0;0;0';
+		}
+		Write-Host ">>>> Dark theme"
     } elseif ($Theme -eq "Light") {
         # Set-PSReadLineOption -Colors @{ Command = "Blue"; Prompt = "Black" }
         # $Global:TerminalTheme = "Light"
