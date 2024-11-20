@@ -42,12 +42,14 @@ Set-Variable -Name "Global:PD_PROMPT_USER" -Value ([Environment]::UserName) -Vis
 New-Variable `
 	-Name "PD_PROMPT_COLOR" `
 	-Value @{
-		'BG_USER'   = '255;255;255';		
-		'FG_USER'   = '0;0;0';
-		'BG_MACHINE' = '255;255;255';		
+		'BG_USER'    = '255;255;255';
+		'FG_USER'    = '0;0;0';
+		'BG_MACHINE' = '255;255;255';
 		'FG_MACHINE' = '0;0;0';
-		'BG_PATH'   = '255;255;255';		
-		'FG_PATH'   = '0;0;0';
+		'BG_PATH'    = '255;255;255';
+		'FG_PATH'    = '0;0;0';
+		'BG_AUX'     = '255;255;255';
+		'FG_AUX'     = '0;0;0';
 	} `
 	-Scope Global `
 	-Visibility Private
@@ -114,7 +116,7 @@ Function Get-Theme {
 			Command                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Strawberry']))m";
 			Comment                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
 			ContinuationPrompt       = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
-			Default                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m"; # DefaultTokenColor
+			Default                  = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
 			Emphasis                 = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
 			Error                    = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
 			InlinePrediction         = "`e[38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m";
@@ -170,7 +172,7 @@ function prompt {
 		']',
 		'[',
 		$Global:custom_git_prompt,
-		']'		
+		']'
 	) -join ''
 	# Line 3 (empty)
 	$line_3 = ''
@@ -179,11 +181,11 @@ function prompt {
 		'|-',
 		'[',
 		(
-			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_USER']);38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + $Global:PD_PROMPT_USER) +
-			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + '@') +
-			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']))m" + $Global:PD_PROMPT_MACHINE) +
-			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Licorice']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + ':') +
-			("`e[48;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Cayenne']));38;2;$((Convert-HexColorToANSI $Global:PD_COLOR_PALLETE['Snow']))m" + $(pwd)) +
+			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_USER']);38;2;$($Global:PD_PROMPT_COLOR['FG_USER'])m" + $Global:PD_PROMPT_USER) +
+			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_AUX']);38;2;$($Global:PD_PROMPT_COLOR['FG_AUX'])m" + '@') +
+			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_MACHINE']);38;2;$($Global:PD_PROMPT_COLOR['FG_MACHINE'])m" + $Global:PD_PROMPT_MACHINE) +
+			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_AUX']);38;2;$($Global:PD_PROMPT_COLOR['FG_AUX'])m" + ':') +
+			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_PATH']);38;2;$($Global:PD_PROMPT_COLOR['FG_PATH'])m" + $(pwd)) +
 			"`e[0m"
 		),
 		']',
