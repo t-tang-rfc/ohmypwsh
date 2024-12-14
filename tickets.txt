@@ -43,4 +43,5 @@ Configure the [PSReadline](https://github.com/PowerShell/PSReadLine) color schem
 Although the PSReadLine affects most of the "readline", not rigorously the prompt itself, together w/ the prompt, it is important for the user experience (UX) in the Read–eval–print loop (REPL) framework. Therefore, I consider this as a sub-task for creating the light/dark theme.
 I plan to use minimal color for the readline, since using many colors will only result in a visual chaos.
 As colors should only be used sporadically, they should be *pop-up*.
-As for the light theme, which will generally based on a white blackground, I prefer *blue* as the main color.
+As for the light theme, which will generally based on a white background, I prefer *blue* as the main color.
+As for the dark theme, which will generally based on a near-black background, I prefer *yellow* as the main color.

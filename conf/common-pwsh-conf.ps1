@@ -219,14 +219,7 @@ function prompt {
 	$line_0 = @(
 		'|-',
 		'[',
-		(
-			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_USER']);38;2;$($Global:PD_PROMPT_COLOR['FG_USER'])m" + $Global:PD_PROMPT_USER) +
-			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_AUX']);38;2;$($Global:PD_PROMPT_COLOR['FG_AUX'])m" + '@') +
-			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_MACHINE']);38;2;$($Global:PD_PROMPT_COLOR['FG_MACHINE'])m" + $Global:PD_PROMPT_MACHINE) +
-			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_AUX']);38;2;$($Global:PD_PROMPT_COLOR['FG_AUX'])m" + ':') +
-			("`e[48;2;$($Global:PD_PROMPT_COLOR['BG_PATH']);38;2;$($Global:PD_PROMPT_COLOR['FG_PATH'])m" + $(pwd)) +
-			"`e[0m"
-		),
+		($Global:PD_PROMPT_USER + '@' + $Global:PD_PROMPT_MACHINE + ':' + $(pwd)),
 		']',
 		'[',
 		$Global:custom_env_prompt, # @todo
