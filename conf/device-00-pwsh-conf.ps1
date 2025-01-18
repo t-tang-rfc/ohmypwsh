@@ -1,11 +1,22 @@
+<#
+	@file: ohmypwsh/conf/device-00-pwsh-conf.ps1
+
+	@brief: Device-specific PowerShell configuration
+
+	@author:
+	- Tianhan Tang (tianhantang.pd@gmail.com)
+
+	@date:
+	- created on 2021-08-09
+	- updated on 2025-01-18	
+#>
+
+# === Function definition
+
 # @brief: Mount remote shared storage as a workspace
 # @note:
 # - `UrlEncode` is used to encode the volume name to handle no-ASCII characters (e.g. Japanese)
 # - This function utilizes the macOS built-in (BSD) `mount`, make sure the path is properly set
-# @todo:
-# - [x] SMB specific
-# - [x] Supress the output of New-Item
-# - [x] Use named parameters
 # @see: `man mount`
 Function Mount-Workspace {
 	param(

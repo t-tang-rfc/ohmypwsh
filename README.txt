@@ -1,5 +1,5 @@
 +++ header
-@file: 07-Panda/M1/ohmypwsh/README.txt
+@file: ohmypwsh/README.txt
 @author: Tianhan Tang (tianhantang.pd@gmail.com)
 @date:
 - created on 2025-01-18
@@ -12,3 +12,9 @@
 It is a collection of scripts and functions that I use in my daily work.
 
 It is inspired by [Oh My Zsh](https://ohmyz.sh).
+
+=== Guideline for contribution
+
+1. Fork the repository
+2. Create your feature or bugfix branch from the `develop` branch
+3. Make pull request to the `develop` branch

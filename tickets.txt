@@ -1,5 +1,5 @@
 +++ header
-@file: 07-Panda/M1/ohmypwsh/tickets.txt
+@file: ohmypwsh/tickets.txt
 +++
 
 === Ticket 1
@@ -10,7 +10,7 @@ Create a oh-my-zsh inspired PowerShell custom prompt, w/ light/dark theme.
 @status: PROGRESSING
 
 @date:
-- initiated on 2024-11-16
+- created on 2024-11-16
 - updated on 2024-11-19
 
 --- Ticket 1-1
@@ -21,7 +21,7 @@ Add proper color scheme for the 3 major fields of terminal prompt---user name, m
 @status: DONE
 
 @date:
-- initiated on 2024-11-16
+- created on 2024-11-16
 - updated on 2024-11-23
 
 @details:
@@ -38,7 +38,7 @@ Configure the [PSReadline](https://github.com/PowerShell/PSReadLine) color schem
 @status: PROGRESSING
 
 @date:
-- initiated on 2024-11-23
+- created on 2024-11-23
 - updated on 2024-11-23
 
 @details:
@@ -53,10 +53,10 @@ As for the dark theme, which will generally based on a near-black background, I 
 @brief:
 Add `Mount-Workspace` command.
 
-@status: TODO
+@status: PROGRESSING
 
 @date:
-- initiated on 2025-01-16
+- created on 2025-01-16
 - updated on 2025-01-16
 
 @details:
@@ -66,25 +66,43 @@ This command should be *machine-dependent*, since each machine is used in specif
 --- Ticket 2-1
 
 @brief:
-Add `Mount-Workspace W4:` for my personal Mac to mount the routine remote workspace, as a pilot test.
+Add `Mount-Workspace` for my personal Mac to mount the routine remote workspace, as a pilot test.
 
 @date:
-- initiated on 2025-01-16
-- updated on 2025-01-17
+- created on 2025-01-16
+- updated on 2025-01-18
 
-@status: PROGRESSING
+@status: DONE
 
 @details:
-- The function only handles a specific workspace Identifier `W4:`.
+- The function only handles a specific workspace Identifier `W4:`
 - It should hard-code NO secret in the script
+- The function call requires all parameters to be passed in, including the remote storage URL, the local mount point, and the username/password.
+
+--- Ticket 2-2
+
+@brief:
+Make `Mount-Workspace W4:` work as it is, w/o provide any additional parameters.
+
+@status: TODO
+
+@date:
+- created on 2025-01-18
+- updated on 2025-01-18
+
+@details:
+Need to devise a mechanism to auto handle the remote storage URL, the local mount point, and the username/password, in a secure way.
 
 === Ticket 3
 
 @brief:
 Create a `develop` branch for the `ohmypwsh` repository, and push it to remote `github` (on GitHub).
 
-@status: TODO
+@status: DONE
 
 @date:
-- initiated on 2025-01-18
+- created on 2025-01-18
 - updated on 2025-01-18
+
+@details:
+Since this is spin-off from a private project, I must confirm that no secret info. is leaked in the public repository.
