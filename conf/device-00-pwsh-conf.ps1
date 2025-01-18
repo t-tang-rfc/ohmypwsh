@@ -4,7 +4,7 @@
 # - This function utilizes the macOS built-in (BSD) `mount`, make sure the path is properly set
 # @todo:
 # - [x] SMB specific
-# - [ ] Supress the output of New-Item
+# - [x] Supress the output of New-Item
 # - [x] Use named parameters
 # @see: `man mount`
 Function Mount-Workspace {
@@ -21,7 +21,7 @@ Function Mount-Workspace {
 		if (-not (Test-Path $MountPoint -PathType Container)) { # Abort if the mount point already exists, since it may be local workspace
 			$mount_target = "//${UserID}:${UserPSW}@${HostID}/$([System.Web.HttpUtility]::UrlEncode($VolumeID))"
 			try {
-				New-Item -ItemType Directory -Path $MountPoint -ErrorAction Stop
+				New-Item -ItemType Directory -Path $MountPoint -ErrorAction Stop 1>$null
 				# Call system comamnd `mount`
 				if ("smbfs" -ne $VolumeType) { # Currently only support SMB protocol for shared volume mounting
 					throw "Volume type '$VolumeType' is not supported in this version."
