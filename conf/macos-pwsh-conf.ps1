@@ -37,7 +37,7 @@ Function Mount-RemoteVolume {
 		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$UserID,        # user identifier
 		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$UserPSW        # passphrase
 	)
-	if ("W4:" -eq $WkspID) { # Currently only support W4:
+	if ("W4" -eq $WkspID) { # Currently only support W4:
 		if (-not (Test-Path $MountPoint -PathType Container)) { # Abort if the mount point already exists, since it may be local workspace
 			$mount_target = "//${UserID}:${UserPSW}@${HostID}/$([System.Web.HttpUtility]::UrlEncode($VolumeID))"
 			try {
