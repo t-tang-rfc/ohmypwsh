@@ -22,109 +22,84 @@ Set-Item -Path "env:GPG_TTY" -Value "$(tty)" # configure GPG_TTY such that gpg-a
 
 # === Function definition
 
-# Mount shared workspace
-Function Mount-WKSP {
+# @brief: Mount remote shared storage to local file system
+# @note:
+# - `UrlEncode` is used to encode the volume name to handle no-ASCII characters (e.g. Japanese)
+# - This function utilizes the macOS built-in (BSD) `mount`, make sure the path is properly set
+# @see: `man mount`
+Function Mount-RemoteVolume {
 	param(
-		[Parameter(Mandatory = $True, ValueFromPipeline = $true, Position = 0)][string]$Name,
-		[Parameter()][string]$IP = '',
-		[Parameter()][string]$Vol = '',
-		[Parameter()][string]$MPt = ''
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$WkspID,        # workspace identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$MountPoint,    # mount point
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$HostID,        # host identifier, IP or hostname
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$VolumeID,      # shared volume identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$VolumeType,    # protocol of the shared volume
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$UserID,        # user identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$UserPSW        # passphrase
 	)
-	process {
-		$wk_name = $Name.Replace(':', '')
-		if ($Global:custom_workspace_info.Contains($wk_name)) {
-			if (
-				([Environment]::MachineName -in $Global:custom_workspace_info.$wk_name.Allow) -or 
-				('All' -eq $Global:custom_workspace_info.$wk_name.Allow)
-			) {
-				if (
-					($Global:custom_workspace_info.Wi.AccPt -eq $Global:custom_workspace_info.$wk_name.AccPt) -or 
-					($Global:custom_workspace_info.$wk_name.Host -eq 'iCloud')
-				) {
-					$Global:custom_error_status = $true
-					$msg = "No need to mount the specified workpace $($wk_name)!"
-					# report status
-					Report-Status $null $msg
-				} else {
-					$mount_point =  [IO.Path]::Combine(
-						$HOME,
-						(('' -eq $MPt) ? $Global:custom_workspace_info.$wk_name.AccPt : $MPt)
-					)
-					if (-not (Test-Path $mount_point)) {
-						New-Item $mount_point -ItemType Directory 1>$null
-					} else {
-						$Global:custom_error_status = $false
-						$err = "Mount point already exist! please take care!"
-						# report status
-						Report-Status $err $null
-						return
-					}
-					$mount_target = 'smb://' + $Global:custom_workspace_info.$wk_name.User + ':' +
-						$Global:custom_workspace_info.$wk_name.Pswd + '@' +
-						(('' -eq $IP) ? $Global:custom_workspace_info.$wk_name.IP : $IP) + '/' +
-						[System.Web.HttpUtility]::UrlEncode(
-							('' -eq $Vol) ? $Global:custom_workspace_info.$wk_name.Volume : $Vol
-						)
-					mount_smbfs $mount_target $mount_point
-
-					$Global:custom_error_status = $?
-					# If not successful, delete the dir
-					if (-not $Global:custom_error_status) {
-						Remove-Item $mount_point
-					}
+	if ("W4:" -eq $WkspID) { # Currently only support W4:
+		if (-not (Test-Path $MountPoint -PathType Container)) { # Abort if the mount point already exists, since it may be local workspace
+			$mount_target = "//${UserID}:${UserPSW}@${HostID}/$([System.Web.HttpUtility]::UrlEncode($VolumeID))"
+			try {
+				New-Item -ItemType Directory -Path $MountPoint -ErrorAction Stop 1>$null
+				# Call system comamnd `mount`
+				if ("smbfs" -ne $VolumeType) { # Currently only support SMB protocol for shared volume mounting
+					throw "Volume type '$VolumeType' is not supported in this version."
 				}
-			} else {
-				$Global:custom_error_status = $false
-				$err = "No authentification for the specified workpace $($wk_name)!"
-				# report status
-				Report-Status $err $null				
+				mount -t smbfs $mount_target $MountPoint
+				if ($?) {
+					Write-Output "Successfully created mount point '$MountPoint' for '$WkspID'."
+				} else {
+					throw "Failed to mount '$WkspID' at '$MountPoint'."
+				}
+			} catch {
+				Write-Error $_.Exception.Message
+				# Clean up
+				if (Test-Path $MountPoint -PathType Container) {
+					Remove-Item -Path $MountPoint -Recurse -Force -ErrorAction SilentlyContinue
+				}
 			}
 		} else {
-			$Global:custom_error_status = $false
-			$err = "The specified workpace $($wk_name) is NOT available!"
-			# report status
-			Report-Status $err $null
+			Write-Error "Mount point '$WkspID' already exists! Please take care!"
 		}
+	} else {
+		Write-Error "Workspace '$WkspID' is not supported in this version."
 	}
 }
 
-# Unmount shared workspace
-Function Remove-WKSP {
+# @brief: Un-mount remote shared storage from local file system
+# @note:
+# - This function utilizes the macOS built-in (BSD) `umount`, make sure the path is properly set
+# @see:
+# - `man umount`
+# - `man diskutil`
+Function Remove-RemoteVolume {
 	param(
-		[Parameter(Mandatory = $True, ValueFromPipeline = $true, Position = 0)][string]$Name,
-		[Parameter()][string]$MPt = ''
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$WkspID,      # workspace identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$MountPoint   # mount point
 	)
-	process {
-		$wk_name = $Name.Replace(':', '')
-		if (
-			($null -eq $Global:custom_workspace_info.$wk_name) -or 
-			($Global:custom_workspace_info.Wi.AccPt -eq $Global:custom_workspace_info.$wk_name.AccPt)
-		) {
-			$Global:custom_error_status = $false
-			$err = "The specified workpace $($wk_name) is NOT valid!"
-			# report status
-			Report-Status $err $null
-		} else {
-			$mount_point = [IO.Path]::Combine(
-				$HOME,
-				(('' -eq $MPt) ? $Global:custom_workspace_info.$wk_name.AccPt : $MPt)
-			)
-			if (-not (Test-Path $mount_point)) {
-				$Global:custom_error_status = $false
-				$err = "The specified workpace $($wk_name) is NOT mounted!"
-				# report status
-				Report-Status $err $null			
-			} else {
-				umount $mount_point 2>$null
+	if ("W4:" -eq $WkspID) { # Currently only support W4:
+		if (-not (Test-Path $MountPoint -PathType Container)) { # Abort if the mount point does not exist
+			Write-Error "The specified mount point '$MountPoint' does not exist or is not mounted."
+			return
+		}
+		try {
+			# Call system command `umount`
+			umount $MountPoint 2>$null
+			if (-not $?) {
+				# Fallback mechanism for force un-mounting
+				diskutil unmount force $MountPoint
 				if (-not $?) {
-					# Fall-back
-					diskutil unmount force $mount_point	
-				}
-				$Global:custom_error_status = $?
-				if (-not (Test-Path ([IO.Path]::Combine($mount_point, '*')))) {
-					Remove-Item $mount_point
+					throw "Failed to unmount '$WkspID' from '$MountPoint'."
 				}
 			}
+			# Clean up
+			Remove-Item -Path $MountPoint -ErrorAction Stop
+			Write-Output "Successfully unmounted '$WkspID' from '$MountPoint' and cleaned up the directory."
+		} catch {
+			Write-Error $_.Exception.Message
 		}
+	} else {
+		Write-Error "Workspace '$WkspID' is not supported in this version."
 	}
 }
