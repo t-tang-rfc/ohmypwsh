@@ -62,3 +62,29 @@ Add `Mount-Workspace` command.
 @details:
 The command `Mount-Workspace` mounts remote storage into local file-system as "Workspace[\d]".
 This command should be *machine-dependent*, since each machine is used in specific setup (w/ different local Workspace, and available remote Workspaces).
+
+--- Ticket 2-1
+
+@brief:
+Add `Mount-Workspace W4:` for my personal Mac to mount the routine remote workspace, as a pilot test.
+
+@date:
+- initiated on 2025-01-16
+- updated on 2025-01-17
+
+@status: PROGRESSING
+
+@details:
+- The function only handles a specific workspace Identifier `W4:`.
+- It should hard-code NO secret in the script
+
+=== Ticket 3
+
+@brief:
+Create a `develop` branch for the `ohmypwsh` repository, and push it to remote `github` (on GitHub).
+
+@status: TODO
+
+@date:
+- initiated on 2025-01-18
+- updated on 2025-01-18
