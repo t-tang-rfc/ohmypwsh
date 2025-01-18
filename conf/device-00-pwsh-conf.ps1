@@ -5,41 +5,41 @@
 # @todo:
 # - [ ] SMB specific
 # - [ ] Supress the output of New-Item
-# - [ ] Use named parameters
+# - [x] Use named parameters
 # @see: `man mount`
 Function Mount-Workspace {
 	param(
-		[Parameter(Mandatory = $true, Position = 0)][string]$wksp_id,   # workspace identifier
-		[Parameter(Mandatory = $true, Position = 1)][string]$mnt_pt,    # mount point
-		[Parameter(Mandatory = $true, Position = 2)][string]$host_id,   # host identifier, IP or hostname
-		[Parameter(Mandatory = $true, Position = 3)][string]$vol_id,    # shared volume identifier
-		[Parameter(Mandatory = $true, Position = 4)][string]$usr_id,    # user identifier
-		[Parameter(Mandatory = $true, Position = 5)][string]$passphrase # passphrase
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$WkspID,   # workspace identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$MountPoint,    # mount point
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$HostID,   # host identifier, IP or hostname
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$VolumeID,    # shared volume identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$UserID,    # user identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$UserPSW # passphrase
 	)
-	if ("W4:" -eq $wksp_id) { # Currently only support W4:
-		if (-not (Test-Path $mnt_pt -PathType Container)) { # Abort if the mount point already exists, since it may be local workspace
-			$mount_target = "//${usr_id}:${passphrase}@${host_id}/$([System.Web.HttpUtility]::UrlEncode($vol_id))"
+	if ("W4:" -eq $WkspID) { # Currently only support W4:
+		if (-not (Test-Path $MountPoint -PathType Container)) { # Abort if the mount point already exists, since it may be local workspace
+			$mount_target = "//${UserID}:${UserPSW}@${HostID}/$([System.Web.HttpUtility]::UrlEncode($VolumeID))"
 			try {
-				New-Item -ItemType Directory -Path $mnt_pt -ErrorAction Stop
+				New-Item -ItemType Directory -Path $MountPoint -ErrorAction Stop
 				# Call system comamnd `mount`
-				mount -t smbfs $mount_target $mnt_pt
+				mount -t smbfs $mount_target $MountPoint
 				if ($?) {
-					Write-Output "Successfully created mount point '$mnt_pt' for '$wksp_id'."
+					Write-Output "Successfully created mount point '$MountPoint' for '$WkspID'."
 				} else {
-					throw "Failed to mount '$wksp_id' at '$mnt_pt'."
+					throw "Failed to mount '$WkspID' at '$MountPoint'."
 				}
 			} catch {
 				Write-Error $_.Exception.Message
 				# Clean up
-				if (Test-Path $mnt_pt -PathType Container) {
-					Remove-Item -Path $mnt_pt -Recurse -Force -ErrorAction SilentlyContinue
+				if (Test-Path $MountPoint -PathType Container) {
+					Remove-Item -Path $MountPoint -Recurse -Force -ErrorAction SilentlyContinue
 				}
 			}
 		} else {
-			Write-Error "Mount point '$wksp_id' already exists! Please take care!"
+			Write-Error "Mount point '$WkspID' already exists! Please take care!"
 		}
 	} else {
-		Write-Error "Workspace '$wksp_id' is not supported in this version."
+		Write-Error "Workspace '$WkspID' is not supported in this version."
 	}
 }
 
@@ -50,31 +50,31 @@ Function Mount-Workspace {
 # - `man umount`
 Function Remove-Workspace {
 	param(
-		[Parameter(Mandatory = $true, Position = 0)][string]$wksp_id, # workspace identifier
-		[Parameter(Mandatory = $true, Position = 1)][string]$mnt_pt   # mount point
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$WkspID, # workspace identifier
+		[Parameter(Mandatory = $true, ValueFromPipeline = $false)][string]$MountPoint   # mount point
 	)
-	if ("W4:" -eq $wksp_id) { # Currently only support W4:
-		if (-not (Test-Path $mnt_pt -PathType Container)) { # Abort if the mount point does not exist
-			Write-Error "The specified mount point '$mnt_pt' does not exist or is not mounted."
+	if ("W4:" -eq $WkspID) { # Currently only support W4:
+		if (-not (Test-Path $MountPoint -PathType Container)) { # Abort if the mount point does not exist
+			Write-Error "The specified mount point '$MountPoint' does not exist or is not mounted."
 			return
 		}
 		try {
 			# Call system command `umount`
-			umount $mnt_pt 2>$null
+			umount $MountPoint 2>$null
 			if (-not $?) {
 				# Fallback mechanism for force un-mounting
-				diskutil unmount force $mnt_pt
+				diskutil unmount force $MountPoint
 				if (-not $?) {
-					throw "Failed to unmount '$wksp_id' from '$mnt_pt'."
+					throw "Failed to unmount '$WkspID' from '$MountPoint'."
 				}
 			}
 			# Clean up
-			Remove-Item -Path $mnt_pt -ErrorAction Stop
-			Write-Output "Successfully unmounted '$wksp_id' from '$mnt_pt' and cleaned up the directory."
+			Remove-Item -Path $MountPoint -ErrorAction Stop
+			Write-Output "Successfully unmounted '$WkspID' from '$MountPoint' and cleaned up the directory."
 		} catch {
 			Write-Error $_.Exception.Message
 		}
 	} else {
-		Write-Error "Workspace '$wksp_id' is not supported in this version."
+		Write-Error "Workspace '$WkspID' is not supported in this version."
 	}
 }
