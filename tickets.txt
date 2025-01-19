@@ -106,3 +106,51 @@ Create a `develop` branch for the `ohmypwsh` repository, and push it to remote `
 
 @details:
 Since this is spin-off from a private project, I must confirm that no secret info. is leaked in the public repository.
+
+=== Ticket 4
+
+@brief:
+Make sourcing device-dependent conf. script configurable.
+
+@status: TODO
+
+@date:
+- created on 2025-01-19
+- updated on 2025-01-19
+
+@details:
+Currently, the device-dependent conf. file name is hard-coded in the main script `pwshrc.ps1`---it is `device-00-pwsh-conf.ps1`.
+
+=== Ticket 5
+
+@brief:
+Redesign the prompt style, to be visually more appealing, and informative.
+
+@status: TODO
+
+@date:
+- created on 2025-01-19
+- updated on 2025-01-19
+
+@details:
+The current prompt is like 
++++ prompt example
+|-[user@machine: path][]
+: <command>
+|-[YYYY-MM-DDTHH:MM:SS+08:00][o][]
++++
+the density of this prompt is too high.
+
+=== Ticket 6
+
+@brief:
+Redesign the `Switch-Theme` function to be more user-friendly.
+
+@status: TODO
+
+@date:
+- created on 2025-01-19
+- updated on 2025-01-19
+
+@details:
+One needs to review the design principle---whether it should only use ANSI escape code feature, or it should be coupled w/ the Terminal app.
