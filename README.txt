@@ -1,21 +1,16 @@
-+++ header
-@file: ohmypwsh/README.txt
-@author: madpang
-@date:
-- created on 2025-01-18
-- updated on 2025-01-26
-+++
+---
+file: README.txt
+author: [madpang, t-tang-rfc]
+date: [created: 2025-01-18, updated: 2026-09-02]
+---
 
-=== Introduction
+## Introduction
 
 [ohmypwsh](https://github.com/madpang/ohmypwsh) is fundamentally a PowerShell profile, much like a `.bashrc` or `.zshrc`.
 It is a collection of scripts and functions that I use in my daily work.
-
 It is inspired by [Oh My Zsh](https://ohmyz.sh).
 
-=== Usage
-
---- To add device-dependent configurations
+## Usage
 
 To add device-dependent configurations, 
 1. Create your configuration file at `conf` directory, e.g. `device-00-pwsh-conf.ps1`.
@@ -32,11 +27,9 @@ The content of the `device-info` file may look like this (`+++ JSON` and `+++` a
 +++
 ```
 
-=== Advanced usage
+## Advanced usage
 
---- To use the device-dependent `Mount-Workspace` function
-
-One needs to create a JSON file to store the necessary parameters for the remote storage mount operation for their system.
+To use the device-dependent `Mount-Workspace` function, one needs to create a JSON file to store the necessary parameters for the remote storage mount operation for their system.
 The content may look like this (`+++ JSON` and `+++` are part of the content):
 ```
 +++ JSON
@@ -54,16 +47,10 @@ The content may look like this (`+++ JSON` and `+++` are part of the content):
 ```
 
 Then encrypt the JSON file with GPG, e.g.
-+++ command
+``` command
 gpg --encrypt --armor --recipient <your_address@email.com> ./workspace-info
-+++
+```
 
 Put the encrypted file in the dedicated ohmypwsh config directory---for macOS, the full path is `~/.ohmypwsh.d/workspace-info.asc`.
 
 There you go, the `Mount-Workspace` function will automatically load the parameters from the encrypted JSON file, and mount the remote storage for you with `Mount-Workspace WkspID`.
-
-=== Guideline for contribution
-
-1. Fork the repository
-2. Create your feature or bugfix branch from the `develop` branch
-3. Make pull request to the `develop` branch

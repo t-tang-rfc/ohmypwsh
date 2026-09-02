@@ -1,6 +1,6 @@
-+++ header
-@file: ohmypwsh/tickets.txt
-+++
+---
+file: tickets.txt
+---
 
 === Ticket 1
 
