@@ -12,45 +12,4 @@ It is inspired by [Oh My Zsh](https://ohmyz.sh).
 
 ## Usage
 
-To add device-dependent configurations, 
-1. Create your configuration file at `conf` directory, e.g. `device-00-pwsh-conf.ps1`.
-2. Create a `device-info` file in the dedicated ohmypwsh config directory---for macOS, the full path is `~/.ohmypwsh.d/device-info`---to link the configuration file name to the device name.
-
-The content of the `device-info` file may look like this (`+++ JSON` and `+++` are part of the content):
-```
-+++ JSON
-{
-	"Your-Device-Name": {
-		ConfPath: "device-00-pwsh-conf.ps1"
-	}
-}
-+++
-```
-
-## Advanced usage
-
-To use the device-dependent `Mount-Workspace` function, one needs to create a JSON file to store the necessary parameters for the remote storage mount operation for their system.
-The content may look like this (`+++ JSON` and `+++` are part of the content):
-```
-+++ JSON
-{
-	WkspID: {
-		MountPoint: "~/Workspace",
-		HostID: "MyServer",
-		VolumeID: "WKSP",
-		VolumeType: "smbfs",
-		UserID: "foo"
-		UserPSW: "hogehoge"
-	}
-}
-+++
-```
-
-Then encrypt the JSON file with GPG, e.g.
-``` command
-gpg --encrypt --armor --recipient <your_address@email.com> ./workspace-info
-```
-
-Put the encrypted file in the dedicated ohmypwsh config directory---for macOS, the full path is `~/.ohmypwsh.d/workspace-info.asc`.
-
-There you go, the `Mount-Workspace` function will automatically load the parameters from the encrypted JSON file, and mount the remote storage for you with `Mount-Workspace WkspID`.
+TBO
